@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be My Valentine?</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:ital,wght@0,400;1,300&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-pink: #ffafbd;
+            --rose-pink: #ffc3a0;
+            --red-glow: #ff4d4d;
+        }
+
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            overflow: hidden; font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--primary-pink), var(--rose-pink));
+            display: flex; justify-content: center; align-items: center; text-align: center;
+        }
+
+        #proposal { z-index: 10; padding: 20px; max-width: 90%; transition: opacity 0.5s; }
+
+        .bear { font-size: 80px; display: inline-block; animation: bounce 2s ease-in-out infinite; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-30px); } }
+
+        h1 { font-family: 'Dancing Script', cursive; font-size: 3.5rem; color: #d63384; margin: 10px 0; }
+        p.subtitle { font-style: italic; font-weight: 300; font-size: 1.2rem; color: #7d204d; margin-bottom: 30px; }
+
+        .button-group { display: flex; justify-content: center; align-items: center; gap: 40px; position: relative; min-height: 120px; }
+
+        #yesBtn {
+            background: linear-gradient(to right, #ff4b2b, #ff416c);
+            color: white; border: none; padding: 15px 45px; font-size: 1.5rem;
+            font-weight: bold; border-radius: 50px; cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 75, 43, 0.4); transition: transform 0.2s, box-shadow 0.2s;
+        }
+        #yesBtn:hover { transform: scale(1.1); box-shadow: 0 0 25px var(--red-glow); }
+
+        #noBtn {
+            background: white; color: #ff416c; border: 2px solid #ff416c;
+            padding: 10px 25px; font-size: 1rem; border-radius: 50px;
+            cursor: pointer; transition: all 0.2s ease; z-index: 100;
+        }
+
+        .heart { position: absolute; bottom: -50px; color: rgba(255, 255, 255, 0.7); user-select: none; pointer-events: none; animation: floatUp linear infinite; }
+        @keyframes floatUp { 0% { transform: translateY(0); opacity: 0; } 20% { opacity: 0.8; } 100% { transform: translateY(-100vh); opacity: 0; } }
+
+        .hidden { display: none !important; }
+        
+        #celebration { 
+            display: none; 
+            flex-direction: column; 
+            align-items: center; 
+            animation: fadeIn 1s;
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .yay { font-size: 6rem; font-weight: 900; color: #fff; animation: pulse 1s infinite alternate; }
+        @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.1); } }
+        
+        .spin { font-size: 100px; animation: spin 3s linear infinite; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        
+        .confetti { position: absolute; width: 10px; height: 10px; z-index: 99; border-radius: 2px; }
+
+        @media (max-width: 600px) { h1 { font-size: 2.5rem; } .button-group { flex-direction: column; gap: 20px; } }
+    </style>
+</head>
+<body>
+
+    <audio id="loveSong" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="proposal">
+        <div class="bear">🧸</div>
+        <h1 id="headline">Will You Be My Valentine?</h1>
+        <p class="subtitle">I've been gathering courage to ask you this..</p>
+        
+        <div class="button-group">
+            <button id="yesBtn" onclick="handleYes()">Yes</button>
+            <button id="noBtn" onmouseover="moveNo()" onclick="moveNo()">No</button>
+        </div>
+        
+        <p style="margin-top: 50px; font-size: 0.9rem; color: #7d204d;">
+            "Every love story is beautiful, but ours is my favourite"
+        </p>
+    </div>
+
+    <div id="celebration">
+        <div class="yay">Yayyyy!</div>
+        <div class="spin">🥰</div>
+        <h2 style="color: white; font-family: 'Dancing Script'; font-size: 2.5rem;">I knew you'd say yes...</h2>
+    </div>
+
+    <div id="heart-container"></div>
+
+    <script>
+        // --- 1. NAME FROM URL ---
+        const urlParams = new URLSearchParams(window.location.search);
+        const name = urlParams.get('name');
+        if (name) {
+            document.getElementById('headline').innerText = `Will You Be My Valentine, ${name}?`;
+        }
+
+        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.getElementById('yesBtn');
+        const heartContainer = document.getElementById('heart-container');
+        const loveSong = document.getElementById('loveSong');
+        
+        const messages = ["Nope!", "Try again!", "You sure?", "Not happening!", "Think again", "Wrong button!", "Nice try!"];
+        let msgIndex = 0;
+
+        // --- 2. FLOATING HEARTS ---
+        function createHearts() {
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.className = 'heart';
+                    heart.innerHTML = '❤️';
+                    heart.style.left = Math.random() * 100 + 'vw';
+                    heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+                    heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                    heartContainer.appendChild(heart);
+                    
+                    heart.addEventListener('animationiteration', () => {
+                        heart.style.left = Math.random() * 100 + 'vw';
+                    });
+                }, i * 300);
+            }
+        }
+        createHearts();
+
+        // --- 3. RUNAWAY NO BUTTON ---
+        function moveNo() {
+            noBtn.style.position = 'fixed';
+            noBtn.innerText = messages[msgIndex];
+            msgIndex = (msgIndex + 1) % messages.length;
+
+            const yesRect = yesBtn.getBoundingClientRect();
+            const padding = 150; 
+
+            let newX, newY;
+            let isOverlapping = true;
+
+            while (isOverlapping) {
+                newX = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+                newY = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+
+                // Avoid Yes Button area
+                if (!(newX < yesRect.right + padding &&
+                      newX + noBtn.offsetWidth > yesRect.left - padding &&
+                      newY < yesRect.bottom + padding &&
+                      newY + noBtn.offsetHeight > yesRect.top - padding)) {
+                    isOverlapping = false;
+                }
+            }
+            noBtn.style.left = newX + 'px';
+            noBtn.style.top = newY + 'px';
+        }
+
+        // --- 4. SUCCESS HANDLER ---
+        function handleYes() {
+            // Play Music
+            loveSong.play().catch(e => console.log("Audio play blocked until interaction"));
+            
+            // UI Change
+            document.getElementById('proposal').classList.add('hidden');
+            document.getElementById('celebration').style.display = 'flex';
+            
+            // Stop background hearts
+            heartContainer.innerHTML = '';
+            
+            // Explode confetti
+            createConfetti();
+        }
+
+        // --- 5. CONFETTI ANIMATION ---
+        function createConfetti() {
+            const colors = ['#ff4b2b', '#ff416c', '#ffffff', '#ffd700', '#00f2fe', '#4facfe'];
+            for (let i = 0; i < 120; i++) {
+                const conf = document.createElement('div');
+                conf.className = 'confetti';
+                conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                conf.style.left = '50%';
+                conf.style.top = '50%';
+                document.body.appendChild(conf);
+
+                const destinationX = (Math.random() - 0.5) * window.innerWidth * 1.7;
+                const destinationY = (Math.random() - 0.5) * window.innerHeight * 1.7;
+
+                conf.animate([
+                    { transform: 'translate(0, 0) rotate(0deg) scale(1)', opacity: 1 },
+                    { transform: `translate(${destinationX}px, ${destinationY}px) rotate(${Math.random() * 1500}deg) scale(0)`, opacity: 0 }
+                ], {
+                    duration: 3000,
+                    easing: 'cubic-bezier(0, .9, .57, 1)',
+                    fill: 'forwards'
+                });
+                
+                setTimeout(() => conf.remove(), 3000);
+            }
+        }
+    </script>
+</body>
+</html>
