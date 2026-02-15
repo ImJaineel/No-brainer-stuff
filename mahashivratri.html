@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Maha Shivratri Special | Har Har Mahadev</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --saffron: #FF9933;
+            --gold: #FFD700;
+            --deep-blue: #020205;
+        }
+
+        /* Prevent scrolling and pull-to-refresh on mobile */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--deep-blue);
+            font-family: 'Poppins', sans-serif;
+            color: white;
+            position: fixed; /* Extra layer of scroll prevention */
+        }
+
+        #canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, transparent 20%, var(--deep-blue) 100%);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* Main Container for better spacing */
+.main-content {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* space-around provides more breathing room at the top/bottom than space-evenly */
+            justify-content: space-around; 
+            height: 100dvh;
+            width: 100%;
+            /* Constrains the layout on ultra-wide laptop screens */
+            max-width: 1200px; 
+            margin: 0 auto;
+            /* Vertical buffering to keep 'Om' and 'Subtitle' away from edges */
+            padding: 5vh 20px; 
+            text-align: center;
+            opacity: 0;
+            transition: opacity 2s ease-in;
+            box-sizing: border-box;
+        }
+
+        .shiva-img {
+            /* Slightly smaller vmin to allow more vertical 'air' */
+            width: 32vmin;
+            height: 32vmin;
+            min-width: 180px;
+            min-height: 180px;
+            max-width: 320px;
+            max-height: 320px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 4px solid var(--saffron);
+            box-shadow: 0 0 60px rgba(255, 153, 51, 0.4);
+            animation: float 4s ease-in-out infinite;
+            /* Ensures the image doesn't steal space from the text */
+            flex-shrink: 0; 
+        }
+
+        .om-symbol {
+            /* Responsive size with a lower cap for laptops */
+            font-size: clamp(50px, 8vw, 90px);
+            margin-bottom: 2vh; 
+            flex-shrink: 0;
+        }
+
+        h1 {
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: clamp(1.6rem, 5vw, 3.5rem);
+            margin-top: 2vh;
+            letter-spacing: 4px;
+        }
+
+        .subtitle {
+            font-size: clamp(0.9rem, 2vw, 1.5rem);
+            margin-top: 1vh;
+            letter-spacing: 6px;
+        }
+
+        #start-screen {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-image: url('https://www.transparenttextures.com/patterns/dark-matter.png');
+        }
+
+        .start-btn {
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            background: rgba(255, 153, 51, 0.1);
+            color: var(--saffron);
+            border: 2px solid var(--saffron);
+            cursor: pointer;
+            border-radius: 50px; /* Modern rounded look */
+            transition: 0.4s;
+            font-family: 'Cinzel Decorative', cursive;
+            letter-spacing: 2px;
+        }
+
+        .start-btn:hover {
+            background: var(--saffron);
+            color: white;
+            box-shadow: 0 0 30px var(--saffron);
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 15px var(--saffron)); }
+            50% { transform: scale(1.05); filter: drop-shadow(0 0 35px #ff4500); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+
+        /* Landscape orientation fix for mobile */
+        @media (max-height: 500px) {
+            .shiva-img { width: 120px; height: 120px; margin: 5px; }
+            .om-symbol { font-size: 40px; }
+            h1 { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="start-screen">
+        <div class="om-symbol" style="margin-bottom: 20px;">ॐ</div>
+        <button class="start-btn" onclick="startExperience()">EXPERIENCE BLISS</button>
+        <p style="margin-top: 20px; color: #777; font-size: 0.8rem; letter-spacing: 1px;">TAP FOR DIVINE SOUND</p>
+    </div>
+
+    <canvas id="canvas"></canvas>
+    <div class="overlay"></div>
+
+    <div class="main-content" id="main-ui">
+        <div class="om-symbol">ॐ</div>
+        <img src="https://images.unsplash.com/photo-1642774667024-e9e2f37914d2?q=80&w=1607&auto=format&fit=crop" alt="Mahadev" class="shiva-img">
+        <h1>Happy Maha Shivratri</h1>
+        <div class="subtitle">Har Har Mahadev</div>
+    </div>
+
+    <audio id="bg-music" loop>
+        <source src="./mahashivratri-assets/mahadev_theme.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function startExperience() {
+            document.getElementById('start-screen').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('start-screen').style.display = 'none';
+                document.getElementById('main-ui').style.opacity = '1';
+            }, 500);
+            
+            const audio = document.getElementById('bg-music');
+            audio.volume = 0.6;
+            audio.play().catch(e => console.log("Audio requires user interaction"));
+        }
+
+        function initCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            particles = [];
+            for (let i = 0; i < 80; i++) particles.push(new Particle());
+        }
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height + canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedY = -(Math.random() * 1.2 + 0.3);
+                this.opacity = Math.random() * 0.5 + 0.1;
+            }
+            update() {
+                this.y += this.speedY;
+                if (this.y < -10) this.reset();
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255, 215, 0, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', initCanvas);
+        initCanvas();
+        animate();
+    </script>
+</body>
+</html>
