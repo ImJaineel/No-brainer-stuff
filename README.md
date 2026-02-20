@@ -4,7 +4,7 @@ A collection of simple, useful, and fun web-based tools and utilities built with
 
 ## 🚀 Live Demo
 You can access all these tools directly via GitHub Pages:  
-**[imjaineel.github.io/No-brainer-stuff/](https://imjaineel.github.io/No-brainer-stuff/)**
+**[imjaineel.github.io/No-brainer-stuff/](https://imjaineel.github.io/NoBrainer/)**
 
 ---
 
@@ -12,17 +12,17 @@ You can access all these tools directly via GitHub Pages:
 
 ### 1. **Work From Office (WFO) Planner** 💼
 A utility tool designed to help manage or plan work-related tasks and office schedules.
-* **File**: `wfo.html`
+* **File**: [`wfo.html`](https://imjaineel.github.io/NoBrainer/wfo.html)
 * **Best for**: Organizing your weekly office routine and tracking productivity.
 
 ### 2. **Calculator** 🧮
 A clean, functional calculator for performing basic arithmetic operations.
-* **File**: `calculator.html`
+* **File**: [`calculator.html`](https://imjaineel.github.io/NoBrainer/calculator.html)
 * **Features**: Addition, subtraction, multiplication, and division with a responsive UI.
 
 ### 3. **Valentine's Interactive** ❤️
 A fun, interactive web page created for Valentine's Day.
-* **File**: `valentine.html`
+* **File**: [`valentine.html`](https://imjaineel.github.io/NoBrainer/valentine.html)
 * **✨ Personalization**: You can customize the name in the URL! 
   * Add `?name=YourName` to the end of the URL.
   * **Example**: `.../valentine.html?name=Jaineel`
@@ -30,12 +30,12 @@ A fun, interactive web page created for Valentine's Day.
 
 ### 4. **Mahashivratri Special** 🕉️
 An interactive greeting or informational page dedicated to the Mahashivratri festival.
-* **File**: `mahashivratri.html`
+* **File**: [`mahashivratri.html`](https://imjaineel.github.io/NoBrainer/mahashivratri.html)
 * **Assets**: Includes dedicated resources in the `/mahashivratri-assets` folder.
 
 ### 5. **Banana Tool** 🍌
 A fun, interactive banana-themed application or game.
-* **File**: `banana.html`
+* **File**: [`banana.html`](https://imjaineel.github.io/NoBrainer/banana.html)
 * **Description**: A "no-brainer" interactive experiment for quick entertainment.
 
 ---
