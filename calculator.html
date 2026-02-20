@@ -227,20 +227,21 @@
             resultBox.style.display = 'block';
 
             // Logic for the specific messages seen in the video
-            if (age < 30) {
+            if (year >= 2001) { // (age < 30) {
                 // Young (Green Box)
                 resultBox.classList.add('result-success');
                 resultBox.innerHTML = `👋 <strong>${name}</strong>, you are ${age} years old.<br>Chill bro, life just started 😎`;
-            } else if (age >= 30 && age < 50) {
+            } else if (year < 2001 && year > 1997) { // (age >= 30 && age < 50) {
                 // Middle Age (Yellow/Warning Box)
                 resultBox.classList.add('result-warning');
-                resultBox.innerHTML = `😐 <strong>${name}</strong>, you are ${age} years old.<br>You are officially an old man now 💀`;
+                resultBox.innerHTML = `😐 <strong>${name}</strong>, you are ${age} years old.<br>You are officially an old now 💀`;
             } else {
                 // Old (Red/Danger Box)
                 resultBox.classList.add('result-danger');
-                resultBox.innerHTML = `⚰️ <strong>${name}</strong>, you are ${age} years old.<br>You should be dead by now. Please stop wasting our server resources.`;
+                resultBox.innerHTML = `😵 <strong>${name}</strong>, you are ${age} years old.<br>You are toooooo much old. Please stop wasting our server resources, stop counting your age. 🙏`;
             }
         }
     </script>
 </body>
+
 </html>
