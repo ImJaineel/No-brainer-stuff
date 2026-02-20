@@ -1,4 +1,4 @@
-# No-brainer-stuff
+# NoBrainer Stuff
 
 A collection of simple, useful, and fun web-based tools and utilities built with pure HTML, CSS, and JavaScript. All tools are self-contained, responsive, and designed for quick use.
 
@@ -49,7 +49,7 @@ A fun, interactive banana-themed application or game.
 ## 📖 How to Use
 1.  **Locally**: Clone the repository and open any `.html` file in your preferred web browser.
     ```bash
-    git clone [https://github.com/ImJaineel/No-brainer-stuff.git](https://github.com/ImJaineel/No-brainer-stuff.git)
+    git clone [https://github.com/ImJaineel/NoBrainer.git](https://github.com/ImJaineel/NoBrainer.git)
     ```
 2.  **Web**: Visit the [GitHub Pages link](https://imjaineel.github.io/NoBrainer/) to use them instantly.
 
